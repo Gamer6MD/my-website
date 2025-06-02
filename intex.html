@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="ro" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ghid Interactiv de Monetizare Online cu funcții AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF7;
+            color: #3D405B;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px;
+            max-height: 50vh;
+        }
+        .nav-link {
+            transition: color 0.3s, border-bottom-color 0.3s;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #E07A5F;
+            border-bottom-color: #E07A5F;
+        }
+        .section-fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .section-fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .tooltip {
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .has-tooltip:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+        .loader {
+            border: 4px solid #f3f3f3; /* Light grey */
+            border-top: 4px solid #E07A5F; /* Orange */
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            margin: 5px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .gemini-output {
+            background-color: #fff9f2;
+            border-left: 4px solid #E07A5F;
+            padding: 12px;
+            margin-top: 10px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            white-space: pre-wrap; /* To preserve line breaks from Gemini */
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white/80 backdrop-blur-lg shadow-sm sticky top-0 z-50">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0">
+                    <a href="#hero" class="text-2xl font-bold text-[#3D405B]">Ghid Monetizare AI</a>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#piloni" class="nav-link px-3 py-2 rounded-md text-sm font-medium">Pilonii Fundamentali</a>
+                        <a href="#strategii" class="nav-link px-3 py-2 rounded-md text-sm font-medium">Strategii de Venit</a>
+                        <a href="#parteneri" class="nav-link px-3 py-2 rounded-md text-sm font-medium">Alegerea Partenerilor</a>
+                        <a href="#avansat" class="nav-link px-3 py-2 rounded-md text-sm font-medium">Tehnici Avansate</a>
+                        <a href="#sinteza" class="nav-link px-3 py-2 rounded-md text-sm font-medium">Sinteză</a>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-[#E07A5F] hover:bg-gray-100 focus:outline-none">
+                        <span class="sr-only">Open main menu</span>
+                        <div id="menu-icon-open" class="block h-6 w-6">
+                            <span class="block w-6 h-0.5 bg-current mb-1.5"></span>
+                            <span class="block w-6 h-0.5 bg-current"></span>
+                            <span class="block w-6 h-0.5 bg-current mt-1.5"></span>
+                        </div>
+                        <div id="menu-icon-close" class="hidden h-6 w-6">
+                            <span class="block w-6 h-0.5 bg-current transform rotate-45 translate-y-0.5"></span>
+                            <span class="block w-6 h-0.5 bg-current transform -rotate-45 -translate-y-px"></span>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </nav>
+        <div id="mobile-menu" class="md:hidden hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#piloni" class="nav-link block px-3 py-2 rounded-md text-base font-medium">Pilonii Fundamentali</a>
+                <a href="#strategii" class="nav-link block px-3 py-2 rounded-md text-base font-medium">Strategii de Venit</a>
+                <a href="#parteneri" class="nav-link block px-3 py-2 rounded-md text-base font-medium">Alegerea Partenerilor</a>
+                <a href="#avansat" class="nav-link block px-3 py-2 rounded-md text-base font-medium">Tehnici Avansate</a>
+                <a href="#sinteza" class="nav-link block px-3 py-2 rounded-md text-base font-medium">Sinteză</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section id="hero" class="py-20 md:py-32 bg-gray-50">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h1 class="text-4xl md:text-6xl font-bold tracking-tight text-[#3D405B] leading-tight">Transformă-ți Conținutul în Venit cu Ajutorul AI</h1>
+                <p class="mt-6 max-w-3xl mx-auto text-lg md:text-xl text-gray-600">Descoperă cum să navighezi complexitatea publicității online. Acest ghid interactiv, acum cu funcții AI, demontează mitul "cât mai multe reclame" și îți arată calea spre o monetizare sustenabilă.</p>
+                <div class="mt-10">
+                    <a href="#piloni" class="bg-[#E07A5F] text-white font-bold py-3 px-8 rounded-full text-lg hover:bg-[#d46a50] transition-colors duration-300">Începe Explorarea</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="piloni" class="py-16 md:py-24 section-fade-in">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-[#3D405B]">Pilonii Fundamentali ai Monetizării</h2>
+                    <p class="mt-4 max-w-2xl mx-auto text-lg text-gray-600">Înainte de a plasa orice reclamă, trebuie să construiești o fundație solidă. Conținutul de calitate și optimizarea pentru motoarele de căutare (SEO) nu sunt opționale; ele sunt motorul care atrage audiența valoroasă pentru advertiseri.</p>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-10 lg:gap-16 items-start">
+                    <div class="bg-white p-8 rounded-xl shadow-md">
+                        <h3 class="text-2xl font-bold mb-4 text-[#81B29A]">1. Conținut de Înaltă Calitate</h3>
+                        <p class="text-gray-600 mb-4">Rețelele de publicitate precum Google AdSense și Media.net impun conținut original și valoros. Fără acesta, eforturile de monetizare sunt sortite eșecului. Conținutul este cel care atrage, angajează și reține utilizatorii, transformând vizitatorii ocazionali în audiență loială.</p>
+                        <ul class="space-y-3 text-gray-700">
+                            <li class="flex items-start"><span class="text-[#81B29A] mr-3 mt-1">&#10003;</span><span>**Originalitate:** Evită conținutul copiat. Oferă perspective unice.</span></li>
+                            <li class="flex items-start"><span class="text-[#81B29A] mr-3 mt-1">&#10003;</span><span>**Relevanță:** Răspunde nevoilor și întrebărilor publicului tău.</span></li>
+                            <li class="flex items-start"><span class="text-[#81B29A] mr-3 mt-1">&#10003;</span><span>**Consistență:** Publică regulat pentru a menține audiența angajată.</span></li>
+                        </ul>
+                        <div class="mt-6">
+                            <label for="niche-input" class="block text-sm font-medium text-gray-700 mb-1">Introdu nișa site-ului tău:</label>
+                            <input type="text" id="niche-input" class="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-[#E07A5F] focus:border-[#E07A5F]" placeholder="Ex: Călătorii, Gătit vegan, Programare Python">
+                            <button id="generate-content-ideas" class="mt-3 w-full bg-[#81B29A] text-white font-semibold py-2 px-4 rounded-md hover:bg-[#6d9a83] transition-colors duration-300 flex items-center justify-center">
+                                ✨ Generează Idei de Conținut
+                                <span id="content-ideas-loader" class="loader ml-2 hidden"></span>
+                            </button>
+                            <div id="content-ideas-output" class="gemini-output mt-4 hidden"></div>
+                        </div>
+                    </div>
+                    <div class="bg-white p-8 rounded-xl shadow-md">
+                        <h3 class="text-2xl font-bold mb-4 text-[#F2CC8F]">2. Strategie SEO Esențială</h3>
+                        <p class="text-gray-600 mb-4">SEO aduce trafic organic, considerat cel mai valoros de către rețelele de publicitate. O bună strategie SEO asigură o vizibilitate constantă și calificată, făcând inventarul tău publicitar mai atractiv.</p>
+                        <div id="seo-checklist" class="space-y-3">
+                            <div class="flex items-start has-tooltip relative">
+                                <span class="text-[#F2CC8F] mr-3 mt-1">&#9733;</span>
+                                <span>**Cuvinte Cheie:** Cercetează și integrează termeni relevanți.</span>
+                                <div class="tooltip absolute left-0 bottom-full mb-2 w-64 bg-gray-800 text-white text-xs rounded p-2 z-10">Atragerea traficului țintă crește relevanța anunțurilor și potențialul de click.</div>
+                            </div>
+                            <div class="flex items-start has-tooltip relative">
+                                <span class="text-[#F2CC8F] mr-3 mt-1">&#9733;</span>
+                                <span>**Viteza Paginilor:** Optimizează imaginile și codul pentru încărcare rapidă.</span>
+                                <div class="tooltip absolute left-0 bottom-full mb-2 w-64 bg-gray-800 text-white text-xs rounded p-2 z-10">O viteză lentă crește rata de respingere și afectează negativ clasamentul și vizibilitatea anunțurilor.</div>
+                            </div>
+                            <div class="flex items-start has-tooltip relative">
+                                <span class="text-[#F2CC8F] mr-3 mt-1">&#9733;</span>
+                                <span>**Design Responsiv:** Asigură o experiență perfectă pe mobil.</span>
+                                <div class="tooltip absolute left-0 bottom-full mb-2 w-64 bg-gray-800 text-white text-xs rounded p-2 z-10">Google folosește indexarea "mobile-first", iar majoritatea traficului vine de pe mobil. Este esențial.</div>
+                            </div>
+                             <div class="flex items-start has-tooltip relative">
+                                <span class="text-[#F2CC8F] mr-3 mt-1">&#9733;</span>
+                                <span>**Structura Site-ului:** Navigare logică și link-uri interne clare.</span>
+                                <div class="tooltip absolute left-0 bottom-full mb-2 w-64 bg-gray-800 text-white text-xs rounded p-2 z-10">Ajută motoarele de căutare să indexeze conținutul eficient și îmbunătățește experiența utilizatorului.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="strategii" class="py-16 md:py-24 bg-gray-50 section-fade-in">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-[#3D405B]">Strategii de Venit</h2>
+                    <p class="mt-4 max-w-2xl mx-auto text-lg text-gray-600">Odată ce fundația este solidă, este timpul să explorezi cum se generează efectiv veniturile. Înțelegerea modelelor de plată și a principiilor de plasare a anunțurilor este cheia succesului.</p>
+                </div>
+
+                <div class="bg-white p-8 rounded-xl shadow-lg mb-16">
+                    <h3 class="text-2xl font-bold text-center mb-2">Modele de Plată: Risc vs. Recompensă</h3>
+                    <p class="text-center text-gray-600 mb-8">Fiecare model de plată implică un echilibru diferit între risc și potențialul de câștig, atât pentru tine (editor), cât și pentru advertiser. Graficul de mai jos ilustrează această dinamică.</p>
+                    <div class="chart-container mb-8">
+                        <canvas id="riskRewardChart"></canvas>
+                    </div>
+                    <div class="flex justify-center space-x-2 md:space-x-4 mb-6">
+                        <button data-model="cpm" class="model-btn bg-[#81B29A] text-white font-semibold py-2 px-4 rounded-full transition-transform duration-200 transform hover:scale-105">CPM</button>
+                        <button data-model="cpc" class="model-btn bg-[#F2CC8F] text-white font-semibold py-2 px-4 rounded-full transition-transform duration-200 transform hover:scale-105">CPC</button>
+                        <button data-model="cpa" class="model-btn bg-[#E07A5F] text-white font-semibold py-2 px-4 rounded-full transition-transform duration-200 transform hover:scale-105">CPA</button>
+                    </div>
+                    <div id="model-details" class="p-6 bg-blue-50 rounded-lg min-h-[160px] transition-all duration-300">
+                        <h4 id="model-title" class="text-xl font-bold mb-2">Alege un model pentru detalii</h4>
+                        <p id="model-description" class="text-gray-700">Selectează unul dintre butoanele de mai sus pentru a vedea definiția, avantajele și dezavantajele pentru editori.</p>
+                    </div>
+                </div>
+
+                <div>
+                     <h3 class="text-2xl font-bold text-center mb-8">Plasarea Anunțurilor: Echilibrul este Cheia</h3>
+                     <p class="text-center text-gray-600 mb-8 max-w-3xl mx-auto">Obiectivul nu este să umpli pagina cu reclame, ci să le integrezi strategic, fără a strica experiența utilizatorului. O plasare inteligentă crește veniturile pe termen lung.</p>
+                     <div class="grid md:grid-cols-2 gap-8">
+                        <div class="border-4 border-red-400 bg-red-50 p-6 rounded-lg">
+                             <h4 class="text-xl font-bold text-red-700 mb-4 text-center">Așa NU: Supraîncărcare</h4>
+                             <div class="w-full h-64 bg-white rounded shadow-inner p-4 text-sm text-gray-400 space-y-2">
+                                 <div class="w-full h-8 bg-red-200 rounded animate-pulse">Ad</div>
+                                 <div class="w-full h-4 bg-gray-200 rounded"></div>
+                                 <div class="w-full h-4 bg-gray-200 rounded"></div>
+                                 <div class="w-1/2 h-4 bg-gray-200 rounded"></div>
+                                 <div class="w-full h-12 bg-red-200 rounded animate-pulse">Ad</div>
+                                 <div class="w-full h-4 bg-gray-200 rounded"></div>
+                                  <div class="w-3/4 h-4 bg-gray-200 rounded"></div>
+                             </div>
+                             <p class="mt-4 text-sm text-red-600">Prea multe reclame, în special deasupra liniei de plutire ("above the fold"), frustrează utilizatorii, cresc rata de respingere și duc la "banner blindness".</p>
+                        </div>
+                         <div class="border-4 border-green-400 bg-green-50 p-6 rounded-lg">
+                             <h4 class="text-xl font-bold text-green-700 mb-4 text-center">Așa DA: Integrare Strategică</h4>
+                             <div class="w-full h-64 bg-white rounded shadow-inner p-4 text-sm text-gray-400 space-y-2">
+                                 <div class="w-full h-4 bg-gray-200 rounded"></div>
+                                 <div class="w-full h-4 bg-gray-200 rounded"></div>
+                                 <div class="w-full h-4 bg-gray-200 rounded"></div>
+                                 <div class="w-3/4 h-4 bg-gray-200 rounded"></div>
+                                  <div class="w-full h-12 bg-green-200 rounded mt-4 mb-4">Ad (între paragrafe)</div>
+                                 <div class="w-full h-4 bg-gray-200 rounded"></div>
+                                 <div class="w-full h-4 bg-gray-200 rounded"></div>
+                                  <div class="w-1/2 h-4 bg-gray-200 rounded"></div>
+                             </div>
+                             <p class="mt-4 text-sm text-green-600">Anunțurile sunt plasate în pauze naturale ale conținutului. Sunt vizibile, dar nu intruzive, respectând experiența de lectură a utilizatorului.</p>
+                        </div>
+                     </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="parteneri" class="py-16 md:py-24 section-fade-in">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                 <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-[#3D405B]">Alegerea Partenerilor de Monetizare</h2>
+                    <p class="mt-4 max-w-2xl mx-auto text-lg text-gray-600">Selectarea rețelei de publicitate potrivite este o decizie crucială. Compară opțiunile principale pentru a vedea care se aliniază cel mai bine cu tipul tău de conținut și audiență.</p>
+                </div>
+                <div id="networks-container" class="grid md:grid-cols-3 gap-8">
+                </div>
+                <div id="network-details-container" class="mt-8"></div>
+            </div>
+        </section>
+        
+        <section id="avansat" class="py-16 md:py-24 bg-gray-50 section-fade-in">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                 <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-[#3D405B]">Tehnici Avansate</h2>
+                    <p class="mt-4 max-w-2xl mx-auto text-lg text-gray-600">Pentru editorii cu experiență, există tehnici care pot crește semnificativ veniturile. Acestea necesită o implementare atentă pentru a evita impactul negativ asupra performanței site-ului.</p>
+                </div>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="bg-white p-8 rounded-xl shadow-md">
+                        <h3 class="text-2xl font-bold mb-4">Header Bidding</h3>
+                        <p class="text-gray-600">Permite mai multor rețele de publicitate să liciteze simultan pentru spațiul tău publicitar, înainte de a apela serverul principal de anunțuri. Rezultatul este o competiție crescută și, de obicei, venituri mai mari (potențial 30-50% creștere). Este o tehnică complexă, dar extrem de eficientă pentru maximizarea valorii fiecărei afișări.</p>
+                        <button data-concept="Header Bidding" class="explain-concept-btn mt-4 bg-[#E07A5F] text-white font-semibold py-2 px-4 rounded-md hover:bg-[#d46a50] transition-colors duration-300 flex items-center justify-center">
+                            ✨ Explică mai Simplu
+                            <span class="loader ml-2 hidden"></span>
+                        </button>
+                        <div class="gemini-output mt-4 hidden"></div>
+                    </div>
+                    <div class="bg-white p-8 rounded-xl shadow-md">
+                        <h3 class="text-2xl font-bold mb-4">Ad Refresh Inteligent</h3>
+                        <p class="text-gray-600">Implică reîncărcarea automată a anunțurilor fără ca utilizatorul să schimbe pagina. Cel mai eficient este reîmprospătarea bazată pe acțiunea utilizatorului (ex: derulare) sau când anunțul este 100% vizibil ("In-View Ad Refresh"), pentru a menține valoarea afișării pentru advertiseri și a respecta politicile rețelelor.</p>
+                        <button data-concept="Ad Refresh Inteligent" class="explain-concept-btn mt-4 bg-[#E07A5F] text-white font-semibold py-2 px-4 rounded-md hover:bg-[#d46a50] transition-colors duration-300 flex items-center justify-center">
+                            ✨ Explică mai Simplu
+                             <span class="loader ml-2 hidden"></span>
+                        </button>
+                        <div class="gemini-output mt-4 hidden"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="sinteza" class="py-16 md:py-24 section-fade-in">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-[#3D405B]">Sinteză și Pași Următori</h2>
+                    <p class="mt-4 max-w-2xl mx-auto text-lg text-gray-600">Monetizarea de succes este un maraton, nu un sprint. Iată recomandările cheie pentru a construi o strategie durabilă și profitabilă.</p>
+                </div>
+                <div class="max-w-4xl mx-auto space-y-6">
+                    <div class="bg-white p-6 rounded-lg shadow-sm flex items-start">
+                        <span class="text-2xl text-[#E07A5F] mr-4">&#10112;</span>
+                        <div>
+                            <h4 class="font-bold text-lg">Prioritizează Calitatea Conținutului și SEO</h4>
+                            <p class="text-gray-600">Aceasta este fundația pe care se construiește totul. Fără trafic organic de calitate, nicio strategie de monetizare nu va fi eficientă pe termen lung.</p>
+                        </div>
+                    </div>
+                     <div class="bg-white p-6 rounded-lg shadow-sm flex items-start">
+                        <span class="text-2xl text-[#E07A5F] mr-4">&#10113;</span>
+                        <div>
+                            <h4 class="font-bold text-lg">Adoptă o Abordare Multi-Rețea</h4>
+                            <p class="text-gray-600">Nu te baza pe o singură sursă de venit. Folosește platforme de mediere precum Ezoic pentru a face rețelele să concureze, maximizând astfel prețul obținut pentru spațiul tău publicitar.</p>
+                        </div>
+                    </div>
+                     <div class="bg-white p-6 rounded-lg shadow-sm flex items-start">
+                        <span class="text-2xl text-[#E07A5F] mr-4">&#10114;</span>
+                        <div>
+                            <h4 class="font-bold text-lg">Echilibrează Densitatea Anunțurilor cu Experiența Utilizatorului</h4>
+                            <p class="text-gray-600">Testează și optimizează. Măsoară venitul per vizită (EPMV), nu doar venitul per afișare (RPM). Uneori, mai puține reclame, plasate mai inteligent, aduc mai mulți bani.</p>
+                        </div>
+                    </div>
+                     <div class="bg-white p-6 rounded-lg shadow-sm flex items-start">
+                        <span class="text-2xl text-[#E07A5F] mr-4">&#10115;</span>
+                        <div>
+                            <h4 class="font-bold text-lg">Respectă Fără Compromis Politicile</h4>
+                            <p class="text-gray-600">Traficul nevalid sau conținutul interzis duc la suspendarea contului și la pierderea veniturilor. Conformitatea este non-negociabilă.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-white">
+        <div class="container mx-auto py-8 px-4 sm:px-6 lg:px-8 text-center">
+            <p>&copy; 2024 Ghid Interactiv de Monetizare cu AI. Toate drepturile rezervate.</p>
+            <p class="text-sm text-gray-400 mt-2">Creat pentru a transforma datele complexe în cunoștințe acționabile.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            
+            // Mobile menu toggle
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const menuIconOpen = document.getElementById('menu-icon-open');
+            const menuIconClose = document.getElementById('menu-icon-close');
+            
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+                menuIconOpen.classList.toggle('hidden');
+                menuIconClose.classList.toggle('hidden');
+            });
+
+            document.querySelectorAll('#mobile-menu a').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                    menuIconOpen.classList.remove('hidden');
+                    menuIconClose.classList.add('hidden');
+                });
+            });
+
+            // Section fade-in observer
+            const sections = document.querySelectorAll('.section-fade-in');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+
+            // Payment models chart and details
+            const modelData = {
+                cpm: {
+                    title: 'CPM (Cost Per Mille)',
+                    description: 'Advertiserul plătește pentru fiecare mie de afișări ale anunțului. Acest model este cel mai sigur pentru editor, garantând un venit bazat pe trafic, indiferent de click-uri. Ideal pentru site-uri cu volum mare de vizitatori.',
+                },
+                cpc: {
+                    title: 'CPC (Cost Per Click)',
+                    description: 'Advertiserul plătește doar când un utilizator dă click pe anunț. Reprezintă un risc mediu pentru editor, deoarece plata depinde de angajamentul activ al utilizatorului. Eficient pentru conținut care generează acțiune.',
+                },
+                cpa: {
+                    title: 'CPA (Cost Per Acquisition)',
+                    description: 'Advertiserul plătește doar când se realizează o conversie (o vânzare, un formular completat). Este modelul cu cel mai mare risc pentru editor, dar și cu cel mai mare potențial de câștig per acțiune, dacă traficul este foarte calificat.',
+                }
+            };
+
+            const modelDetailsEl = document.getElementById('model-details');
+            const modelTitleEl = document.getElementById('model-title');
+            const modelDescriptionEl = document.getElementById('model-description');
+            document.querySelectorAll('.model-btn').forEach(button => {
+                button.addEventListener('click', () => {
+                    const model = button.dataset.model;
+                    modelTitleEl.textContent = modelData[model].title;
+                    modelDescriptionEl.textContent = modelData[model].description;
+                });
+            });
+
+            const riskRewardCtx = document.getElementById('riskRewardChart').getContext('2d');
+            new Chart(riskRewardCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['CPM', 'CPC', 'CPA'],
+                    datasets: [
+                        {
+                            label: 'Risc Editor',
+                            data: [2, 5, 9],
+                            backgroundColor: '#E07A5F',
+                            borderColor: '#d46a50',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Recompensă Potențială Editor',
+                            data: [3, 6, 10],
+                            backgroundColor: '#81B29A',
+                            borderColor: '#6d9a83',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            max: 10,
+                             grid: { color: 'rgba(0, 0, 0, 0.05)' },
+                            ticks: {
+                                callback: function(value) {
+                                    if (value === 0) return 'Scăzut';
+                                    if (value === 5) return 'Mediu';
+                                    if (value === 10) return 'Ridicată';
+                                    return '';
+                                }
+                            }
+                        },
+                        y: { grid: { display: false } }
+                    },
+                    plugins: {
+                        legend: { position: 'top' },
+                        title: { display: true, text: 'Analiza Risc vs. Recompensă pentru Editori' },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) { label += ': '; }
+                                    if (context.parsed.x !== null) {
+                                        if(context.parsed.x < 4) label += 'Scăzut';
+                                        else if(context.parsed.x < 7) label += 'Mediu';
+                                        else label += 'Ridicată';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Ad networks data and interaction
+            const networksData = [
+                {
+                    name: "Google AdSense", logo: "GA", color: "bg-blue-500",
+                    tagline: "Rețeaua dominantă, ideală pentru începători.",
+                    details: `<h4 class="font-bold text-lg mb-2">Google AdSense</h4><p class="mb-4">Este cea mai mare și mai cunoscută rețea... Folosește AI...</p><ul class="space-y-2 text-sm"><li><strong>Cotă Venit Editor:</strong> ~68%</li><li><strong>Prag Minim Plată:</strong> 100 USD</li><li><strong>Politici Cheie:</strong> Foarte stricte...</li></ul>`
+                },
+                {
+                    name: "Media.net", logo: "MN", color: "bg-yellow-500",
+                    tagline: "Alternativa contextuală, cu acces la Yahoo!-Bing.",
+                    details: `<h4 class="font-bold text-lg mb-2">Media.net</h4><p class="mb-4">O rețea puternică... preferă site-uri cu conținut premium...</p><ul class="space-y-2 text-sm"><li><strong>Cotă Venit Editor:</strong> Necunoscută (>30%)</li><li><strong>Prag Minim Plată:</strong> 100 USD</li><li><strong>Politici Cheie:</strong> Cerințe ridicate de calitate...</li></ul>`
+                },
+                {
+                    name: "Ezoic", logo: "EZ", color: "bg-purple-500",
+                    tagline: "Platformă de optimizare AI și mediere.",
+                    details: `<h4 class="font-bold text-lg mb-2">Ezoic</h4><p class="mb-4">Mai mult decât o rețea... folosește AI pentru a testa mii de combinații...</p><ul class="space-y-2 text-sm"><li><strong>Cotă Venit Editor:</strong> ~90%</li><li><strong>Prag Minim Plată:</strong> 20 USD</li><li><strong>Politici Cheie:</strong> Aderă la politicile Google Ad Exchange...</li></ul>`
+                }
+            ];
+
+            const networksContainer = document.getElementById('networks-container');
+            const detailsContainer = document.getElementById('network-details-container');
+            
+            networksData.forEach((network, index) => {
+                const card = document.createElement('div');
+                card.className = 'network-card bg-white p-6 rounded-lg shadow-md cursor-pointer hover:shadow-xl hover:-translate-y-1 transition-all duration-300';
+                card.dataset.index = index;
+                card.innerHTML = `<div class="flex items-center space-x-4"><div class="w-12 h-12 ${network.color} text-white flex items-center justify-center rounded-full font-bold text-xl">${network.logo}</div><div><h4 class="font-bold text-lg">${network.name}</h4><p class="text-sm text-gray-500">${network.tagline}</p></div></div>`;
+                networksContainer.appendChild(card);
+            });
+
+            networksContainer.addEventListener('click', (e) => {
+                const card = e.target.closest('.network-card');
+                if (card) {
+                    document.querySelectorAll('.network-card').forEach(c => c.classList.remove('ring-2', 'ring-[#E07A5F]'));
+                    card.classList.add('ring-2', 'ring-[#E07A5F]');
+                    const networkIndex = card.dataset.index;
+                    detailsContainer.innerHTML = `<div class="bg-white p-8 rounded-xl shadow-lg transition-opacity duration-500 animate-fade-in">${networksData[networkIndex].details}</div>`;
+                }
+            });
+            
+            // Custom animation class for network details
+            const style = document.createElement('style');
+            style.innerHTML = `@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } } .animate-fade-in { animation: fadeIn 0.5s ease-out forwards; }`;
+            document.head.appendChild(style);
+
+            // --- Gemini API Integration ---
+            const apiKey = ""; // API Key will be injected by the environment if needed for models other than gemini-2.0-flash
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+            async function callGeminiAPI(prompt, buttonElement, outputElement) {
+                const loader = buttonElement.querySelector('.loader');
+                loader.classList.remove('hidden');
+                outputElement.classList.add('hidden');
+                outputElement.textContent = '';
+
+                let chatHistory = [{ role: "user", parts: [{ text: prompt }] }];
+                const payload = { contents: chatHistory };
+
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        console.error("API Error:", errorData);
+                        throw new Error(`API request failed with status ${response.status}: ${errorData?.error?.message || response.statusText}`);
+                    }
+
+                    const result = await response.json();
+                    
+                    if (result.candidates && result.candidates.length > 0 &&
+                        result.candidates[0].content && result.candidates[0].content.parts &&
+                        result.candidates[0].content.parts.length > 0) {
+                        const text = result.candidates[0].content.parts[0].text;
+                        outputElement.textContent = text;
+                        outputElement.classList.remove('hidden');
+                    } else {
+                        console.error("Unexpected API response structure:", result);
+                        outputElement.textContent = "Nu am putut genera un răspuns. Structura răspunsului este neașteptată.";
+                        outputElement.classList.remove('hidden');
+                    }
+                } catch (error) {
+                    console.error('Error calling Gemini API:', error);
+                    outputElement.textContent = `Eroare la apelarea API-ului: ${error.message}. Verificați consola pentru detalii.`;
+                    outputElement.classList.remove('hidden');
+                } finally {
+                    loader.classList.add('hidden');
+                }
+            }
+
+            // Content Idea Generator
+            const nicheInput = document.getElementById('niche-input');
+            const generateContentIdeasBtn = document.getElementById('generate-content-ideas');
+            const contentIdeasOutput = document.getElementById('content-ideas-output');
+
+            generateContentIdeasBtn.addEventListener('click', () => {
+                const niche = nicheInput.value.trim();
+                if (!niche) {
+                    contentIdeasOutput.textContent = "Te rog introdu o nișă pentru site-ul tău.";
+                    contentIdeasOutput.classList.remove('hidden');
+                    return;
+                }
+                const prompt = `Generează 5 idei de articole de blog sau titluri de conținut pentru un site web cu nișa "${niche}". Oferă idei creative și atractive pentru public.`;
+                callGeminiAPI(prompt, generateContentIdeasBtn, contentIdeasOutput);
+            });
+
+            // Explain Advanced Concepts
+            document.querySelectorAll('.explain-concept-btn').forEach(button => {
+                button.addEventListener('click', async () => {
+                    const concept = button.dataset.concept;
+                    const outputDiv = button.nextElementSibling; // The .gemini-output div
+                    const prompt = `Explică conceptul de "${concept}" din domeniul monetizării online într-un mod simplu, ca și cum ai explica unui începător. Poți folosi o analogie dacă ajută.`;
+                    callGeminiAPI(prompt, button, outputDiv);
+                });
+            });
+
+        });
+    </script>
+</body>
+</html>
